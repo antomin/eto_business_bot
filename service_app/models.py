@@ -1,7 +1,6 @@
 from django.db import models
 
 
-# SERVICES
 class ServiceCategory(models.Model):
     title = models.CharField(verbose_name='категория', max_length=64, unique=True)
     is_active = models.BooleanField(verbose_name='активна', default=True)
@@ -13,9 +12,13 @@ class ServiceCategory(models.Model):
         self.is_active = False
         self.save()
 
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
 
 class ServiceSubCategory(models.Model):
-    title = models.CharField(verbose_name='категория', max_length=64, unique=True)
+    title = models.CharField(verbose_name='подкатегория', max_length=64, unique=True)
     category = models.ForeignKey(ServiceCategory, verbose_name='категория', on_delete=models.CASCADE)
     is_active = models.BooleanField(verbose_name='активна', default=True)
 
@@ -25,6 +28,10 @@ class ServiceSubCategory(models.Model):
     def delete(self, using=None, keep_parents=False):
         self.is_active = False
         self.save()
+
+    class Meta:
+        verbose_name = 'Подкатегория'
+        verbose_name_plural = 'Подкатегории'
 
 
 class ServiceUser(models.Model):
@@ -45,31 +52,6 @@ class ServiceUser(models.Model):
         self.is_active = False
         self.save()
 
-
-# COURSES
-class CourseCategory(models.Model):
-    title = models.CharField(verbose_name='категория курсов', max_length=24)
-    is_active = models.BooleanField(verbose_name='активна', default=True)
-
-    def __str__(self):
-        return self.title
-
-    def delete(self, using=None, keep_parents=False):
-        self.is_active = False
-        self.save()
-
-
-class Course(models.Model):
-    title = models.CharField(verbose_name='курс', max_length=24)
-    category = models.ForeignKey(CourseCategory, verbose_name='категория', on_delete=models.CASCADE)
-    description = models.TextField(verbose_name='описание')
-    url = models.URLField(verbose_name='ссылка')
-    image_url = models.ImageField(upload_to='service_images', verbose_name='изображение', max_length=64)
-    is_active = models.BooleanField(verbose_name='активна', default=True)
-
-    def __str__(self):
-        return f'{self.title} ({self.category})'
-
-    def delete(self, using=None, keep_parents=False):
-        self.is_active = False
-        self.save()
+    class Meta:
+        verbose_name = 'Услуга'
+        verbose_name_plural = 'Услуги'
