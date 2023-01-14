@@ -148,10 +148,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Django Debug Toolbar
+
 if DEBUG:
     INSTALLED_APPS.append('debug_toolbar')
     INTERNAL_IPS = ['127.0.0.1']
     MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
 
 # Telegram bot token
+
 TG_TOKEN = env.str('TG_TOKEN')

@@ -1,5 +1,3 @@
-from typing import Union
-
 from aiogram.dispatcher.filters import Command
 from aiogram.types import CallbackQuery, Message
 
@@ -12,5 +10,10 @@ async def categories(message: Message):
     await list_categories(message)
 
 
-async def list_categories(message: Union[Message, CallbackQuery], **kwargs):
+async def list_categories(message: Message | CallbackQuery):
     markup = await categories_kb()
+
+    if isinstance(message, Message):
+        await message.answer('Выберите категорию', reply_markup=markup)
+    elif isinstance(message, CallbackQuery):
+        await message.message.edit_reply_markup(markup)
