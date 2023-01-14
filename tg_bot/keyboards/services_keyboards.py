@@ -1,22 +1,22 @@
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import (InlineKeyboardButton, InlineKeyboardMarkup,
+                           InputMediaPhoto)
 from aiogram.utils.callback_data import CallbackData
 
-from service_app.models import ServiceCategory
-from tg_bot.common.db_commands import (get_categories, get_services,
-                                       get_sub_categories)
+from tg_bot.common.db_commands import (get_service, get_service_categories,
+                                       get_service_subcategories, get_services)
+from tg_bot.loader import bot
 
-menu_cb = CallbackData('show_menu', 'level', 'category', 'subcategory', 'service')
-contacts_service = CallbackData('show_contacts', 'service_id')
+menu_cd = CallbackData('show_menu', 'level', 'category', 'subcategory', 'service')
 
 
 def make_callback_data(level, category='_', subcategory='_', service='_'):
-    return menu_cb.new(level=level, category=category, subcategory=subcategory, service=service)
+    return menu_cd.new(level=level, category=category, subcategory=subcategory, service=service)
 
 
 async def categories_kb():
     cur_level = 0
     markup = InlineKeyboardMarkup(row_width=1)
-    categories = get_categories()
+    categories = await get_service_categories()
 
     async for category in categories:
         btn_text = category.title
@@ -26,10 +26,10 @@ async def categories_kb():
     return markup
 
 
-async def sub_categories_kb(category_id):
+async def subcategories_kb(category_id):
     cur_level = 1
-    markup = InlineKeyboardMarkup()
-    sub_categories = await get_sub_categories(category_id)
+    markup = InlineKeyboardMarkup(row_width=1)
+    sub_categories = await get_service_subcategories(category_id)
 
     async for sub_category in sub_categories:
         btn_text = sub_category.title
@@ -41,15 +41,15 @@ async def sub_categories_kb(category_id):
     return markup
 
 
-async def services_kb(subcategory_id, category_id):
+async def services_kb(category_id, subcategory_id):
     cur_level = 2
-    markup = InlineKeyboardMarkup()
+    markup = InlineKeyboardMarkup(row_width=2)
     services = await get_services(subcategory_id)
 
-    for service in services:
+    async for service in services:
         markup.add(
             InlineKeyboardButton('Email', url=service.email),
-            InlineKeyboardButton('Telegram', url=service.tg)
+            InlineKeyboardButton('Telegram', url=f't.me/{service.tg}')
         )
 
     markup.row(InlineKeyboardButton(
