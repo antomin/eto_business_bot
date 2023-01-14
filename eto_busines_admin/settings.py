@@ -14,8 +14,6 @@ from pathlib import Path
 
 from environs import Env
 
-from tg_bot.loader import DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -47,7 +45,6 @@ INSTALLED_APPS = [
 
     'service_app',
     'course_app',
-
     'tg_bot',
 ]
 
@@ -92,11 +89,11 @@ DATABASES = {
     # }
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PASSWORD,
-        'HOST': DB_HOST,
-        'PORT': DB_PORT,
+        'NAME': env.str('DB_NAME'),
+        'USER': env.str('DB_USER'),
+        'PASSWORD': env.str('DB_PASSWORD'),
+        'HOST': env.str('DB_HOST'),
+        'PORT': env.int('DB_PORT'),
     }
 }
 
@@ -155,3 +152,6 @@ if DEBUG:
     INSTALLED_APPS.append('debug_toolbar')
     INTERNAL_IPS = ['127.0.0.1']
     MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+
+# Telegram bot token
+TG_TOKEN = env.str('TG_TOKEN')
