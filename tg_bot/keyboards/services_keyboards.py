@@ -1,10 +1,8 @@
-from aiogram.types import (InlineKeyboardButton, InlineKeyboardMarkup,
-                           InputMediaPhoto)
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
 
-from tg_bot.common.db_commands import (get_service, get_service_categories,
+from tg_bot.common.db_commands import (get_service_categories,
                                        get_service_subcategories, get_services)
-from tg_bot.loader import bot
 
 menu_cd = CallbackData('show_menu', 'level', 'category', 'subcategory', 'service')
 
@@ -41,19 +39,17 @@ async def subcategories_kb(category_id):
     return markup
 
 
-async def services_kb(category_id, subcategory_id):
+async def service_kb(service, is_last=False):
     cur_level = 2
-    markup = InlineKeyboardMarkup(row_width=2)
-    services = await get_services(subcategory_id)
+    markup = InlineKeyboardMarkup()
+    markup.add(
+        InlineKeyboardButton('Email', callback_data=f'mailto__{service.email}'),
+        InlineKeyboardButton('Telegram', url=f't.me/{service.tg}')
+    )
 
-    async for service in services:
-        markup.add(
-            InlineKeyboardButton('Email', url=service.email),
-            InlineKeyboardButton('Telegram', url=f't.me/{service.tg}')
-        )
-
-    markup.row(InlineKeyboardButton(
-        text='Назад',
-        callback_data=make_callback_data(level=cur_level-1, category=category_id)))
+    if is_last:
+        markup.row(InlineKeyboardButton(
+            text='Назад',
+            callback_data=make_callback_data(level=cur_level - 1, subcategory=service.sub_category)))
 
     return markup

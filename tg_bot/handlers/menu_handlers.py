@@ -1,14 +1,25 @@
-from aiogram.dispatcher.filters import Command
-from aiogram.types import CallbackQuery, Message
+from webbrowser import open as browser_open
 
+from aiogram.dispatcher.filters import Command
+from aiogram.types import CallbackQuery, InputFile, Message
+from django.conf import settings
+
+from tg_bot.common.db_commands import get_services
 from tg_bot.keyboards.services_keyboards import (categories_kb, menu_cd,
-                                                 services_kb, subcategories_kb)
+                                                 service_kb, subcategories_kb)
 from tg_bot.loader import dp
 
 
 @dp.message_handler(Command('Категории'))
 async def categories(message: Message):
     await list_categories(message)
+
+
+@dp.callback_query_handler(lambda callback: callback.data and callback.data.startswith('mailto__'))
+async def open_mail(callback: CallbackQuery):
+    email = callback.data.split('__')[-1]
+    browser_open(f'mailto:{email}')
+    await callback.answer()
 
 
 async def list_categories(message: Message | CallbackQuery, **kwargs):
@@ -25,9 +36,15 @@ async def list_subcategories(callback: CallbackQuery, category_id, **kwargs):
     await callback.message.edit_text('Выберите подкатегорию:', reply_markup=markup)
 
 
-async def list_services(callback: CallbackQuery, subcategory_id, category_id, **kwargs):
-    markup = await services_kb(subcategory_id=subcategory_id, category_id=category_id)
-    await callback.message.edit_text('Список услуг:', reply_markup=markup)
+async def list_services(callback: CallbackQuery, subcategory_id, **kwargs):
+    services = await get_services(subcategory_id)
+    async for service in services:
+        markup = await service_kb(service)
+        await callback.message.answer_photo(
+            InputFile(f'{settings.BASE_DIR}/{service.image_url}'),
+            caption=f'<b>{service.first_name} {service.last_name}</b>\n\n{service.description}',
+            reply_markup=markup
+        )
 
 
 @dp.callback_query_handler(menu_cd.filter())
