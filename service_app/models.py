@@ -33,7 +33,7 @@ class ServiceSubCategory(models.Model):
     class Meta:
         verbose_name = 'Подкатегория'
         verbose_name_plural = 'Подкатегории'
-        ordering = ['-is_active', 'title']
+        ordering = ['-is_active', 'title', 'category']
 
 
 class ServiceUser(models.Model):
@@ -51,6 +51,9 @@ class ServiceUser(models.Model):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+
+    def get_category_id(self):
+        return ServiceCategory.objects.get(id=self.sub_category)
 
     def delete(self, using=None, keep_parents=False):
         self.is_active = False

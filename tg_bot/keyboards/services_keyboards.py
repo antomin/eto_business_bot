@@ -7,7 +7,7 @@ from tg_bot.common.db_commands import (get_service_categories,
 menu_cd = CallbackData('show_menu', 'level', 'category', 'subcategory', 'service')
 
 
-def make_callback_data(level, category='_', subcategory='_', service='_'):
+def make_callback_data(level, category='0', subcategory='0', service='0'):
     return menu_cd.new(level=level, category=category, subcategory=subcategory, service=service)
 
 
@@ -50,6 +50,12 @@ async def service_kb(service, is_last=False):
     if is_last:
         markup.row(InlineKeyboardButton(
             text='Назад',
-            callback_data=make_callback_data(level=cur_level - 1, subcategory=service.sub_category)))
+            callback_data=make_callback_data(
+                level=cur_level - 1,
+                category=service.get_category_id(),
+                subcategory=service.sub_category
+            )
+        ))
 
     return markup
+
