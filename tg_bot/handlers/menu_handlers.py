@@ -39,11 +39,11 @@ async def list_subcategories(callback: CallbackQuery, category_id, **kwargs):
         await callback.message.edit_text('Выберите подкатегорию:', reply_markup=markup)
 
 
-async def list_services(callback: CallbackQuery, subcategory_id, **kwargs):
+async def list_services(callback: CallbackQuery, category_id, subcategory_id, **kwargs):
     cnt = 1
     services = await get_services(subcategory_id)
     async for service in services:
-        markup = await service_kb(service, is_last=True if cnt == len(services) else False)
+        markup = await service_kb(service, category_id, is_last=True if cnt == len(services) else False)
         await callback.message.answer_photo(
             InputFile(f'{settings.MEDIA_ROOT}/{service.image_url}'),
             caption=f'<b>{service.first_name} {service.last_name}</b>\n\n{service.description}',

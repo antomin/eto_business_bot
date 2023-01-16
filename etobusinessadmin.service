@@ -1,0 +1,12 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=etobusiness
+Group=www-data
+WorkingDirectory=/home/etobusiness/etobusiness_app
+ExecStart=/home/etobusiness/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/home/etobusiness/etobusiness_app/etobusiness_app.sock eto_busines_admin.wsgi
+
+[Install]
+WantedBy=multi-user.target

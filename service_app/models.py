@@ -8,9 +8,9 @@ class ServiceCategory(models.Model):
     def __str__(self):
         return self.title
 
-    def delete(self, using=None, keep_parents=False):
-        self.is_active = False
-        self.save()
+    # def delete(self, using=None, keep_parents=False):
+    #     self.is_active = False
+    #     self.save()
 
     class Meta:
         verbose_name = 'Категория'
@@ -20,15 +20,15 @@ class ServiceCategory(models.Model):
 
 class ServiceSubCategory(models.Model):
     title = models.CharField(verbose_name='подкатегория', max_length=64, unique=True)
-    category = models.ForeignKey(ServiceCategory, verbose_name='категория', on_delete=models.CASCADE)
+    category = models.ForeignKey(ServiceCategory, verbose_name='категория', on_delete=models.PROTECT)
     is_active = models.BooleanField(verbose_name='активна', default=True)
 
     def __str__(self):
         return f'{self.title}({self.category})'
 
-    def delete(self, using=None, keep_parents=False):
-        self.is_active = False
-        self.save()
+    # def delete(self, using=None, keep_parents=False):
+    #     self.is_active = False
+    #     self.save()
 
     class Meta:
         verbose_name = 'Подкатегория'
@@ -52,14 +52,15 @@ class ServiceUser(models.Model):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
-    def get_category_id(self):
-        return ServiceCategory.objects.get(id=self.sub_category)
+    async def get_category_id(self):
+        return ServiceCategory.objects.get(id=self.sub_category.first().category.id)
 
-    def delete(self, using=None, keep_parents=False):
-        self.is_active = False
-        self.save()
+    # def delete(self, using=None, keep_parents=False):
+    #     self.is_active = False
+    #     self.save()
 
     class Meta:
         verbose_name = 'Услуга'
         verbose_name_plural = 'Услуги'
         ordering = ['-is_active', 'updated_at']
+

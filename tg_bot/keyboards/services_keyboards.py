@@ -39,7 +39,7 @@ async def subcategories_kb(category_id):
     return markup
 
 
-async def service_kb(service, is_last=False):
+async def service_kb(service, category_id, is_last=False):
     cur_level = 2
     markup = InlineKeyboardMarkup()
     markup.add(
@@ -52,7 +52,7 @@ async def service_kb(service, is_last=False):
             text='Назад',
             callback_data=make_callback_data(
                 level=cur_level - 1,
-                category=service.get_category_id(),
+                category=category_id,
                 subcategory=service.sub_category
             )
         ))
