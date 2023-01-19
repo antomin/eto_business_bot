@@ -6,4 +6,5 @@ kb_main.row(
     KeyboardButton('Услуги'),
 ).row(
     KeyboardButton('Курсы'),
+    KeyboardButton('Контакты'),
 )
