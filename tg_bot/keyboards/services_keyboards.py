@@ -4,11 +4,11 @@ from aiogram.utils.callback_data import CallbackData
 from tg_bot.common.db_commands import (get_service_categories,
                                        get_service_subcategories, get_services)
 
-menu_cd = CallbackData('show_menu', 'level', 'category', 'subcategory', 'service')
+menu_cd = CallbackData('show_menu', 'level', 'category', 'subcategory', 'service', 'page')
 
 
-def make_callback_data(level, category='0', subcategory='0', service='0'):
-    return menu_cd.new(level=level, category=category, subcategory=subcategory, service=service)
+def make_callback_data(level, category='0', subcategory='0', service='0', page='1'):
+    return menu_cd.new(level=level, category=category, subcategory=subcategory, service=service, page=page)
 
 
 async def categories_kb():
@@ -39,7 +39,8 @@ async def subcategories_kb(category_id):
     return markup
 
 
-async def service_kb(service, category_id, is_last=False):
+async def service_kb(service, category_id, subcategory_id, cur_page, is_last=False, has_next_page=False,
+                     has_prev_page=False):
     cur_level = 2
     markup = InlineKeyboardMarkup()
     markup.add(
@@ -48,12 +49,29 @@ async def service_kb(service, category_id, is_last=False):
     )
 
     if is_last:
+        pagination_btn = []
+
+        if has_prev_page:
+            pagination_btn.append(InlineKeyboardButton(
+                text='<< Пред.',
+                callback_data=make_callback_data(level=cur_level, category=category_id, subcategory=subcategory_id,
+                                                 page=cur_page-1)
+                ))
+
+        if has_next_page:
+            pagination_btn.append(InlineKeyboardButton(
+                text='След. >>',
+                callback_data=make_callback_data(level=cur_level, category=category_id, subcategory=subcategory_id,
+                                                 page=cur_page+1)
+            ))
+
+        markup.row(*pagination_btn)
+
         markup.row(InlineKeyboardButton(
             text='Назад',
             callback_data=make_callback_data(
                 level=cur_level - 1,
-                category=category_id,
-                subcategory=service.sub_category
+                category=category_id
             )
         ))
 

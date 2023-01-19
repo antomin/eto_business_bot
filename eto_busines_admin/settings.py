@@ -159,3 +159,4 @@ if DEBUG:
 # Telegram bot token
 
 TG_TOKEN = env.str('TG_TOKEN')
+ITEMS_IN_PAGE = 1

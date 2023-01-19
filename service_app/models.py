@@ -8,10 +8,6 @@ class ServiceCategory(models.Model):
     def __str__(self):
         return self.title
 
-    # def delete(self, using=None, keep_parents=False):
-    #     self.is_active = False
-    #     self.save()
-
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
@@ -25,10 +21,6 @@ class ServiceSubCategory(models.Model):
 
     def __str__(self):
         return f'{self.title}({self.category})'
-
-    # def delete(self, using=None, keep_parents=False):
-    #     self.is_active = False
-    #     self.save()
 
     class Meta:
         verbose_name = 'Подкатегория'
@@ -54,10 +46,6 @@ class ServiceUser(models.Model):
 
     async def get_category_id(self):
         return ServiceCategory.objects.get(id=self.sub_category.first().category.id)
-
-    # def delete(self, using=None, keep_parents=False):
-    #     self.is_active = False
-    #     self.save()
 
     class Meta:
         verbose_name = 'Услуга'
