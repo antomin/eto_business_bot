@@ -4,22 +4,15 @@ from django.conf import settings
 from django.core.paginator import Paginator
 
 from tg_bot.common.db_commands import get_services
-from tg_bot.keyboards.services_keyboards import (categories_kb, menu_cd,
-                                                 service_kb, subcategories_kb)
+from tg_bot.keyboards.services_keyboards import (categories_kb, service_kb,
+                                                 services_cd, subcategories_kb)
 from tg_bot.loader import dp
 
 
-@dp.message_handler(text="Категории")
+@dp.message_handler(text="Услуги")
 async def categories(message: Message):
     await message.delete()
     await list_categories(message)
-
-
-# @dp.callback_query_handler(lambda callback: callback.data and callback.data.startswith('mailto__'))
-# async def open_mail(callback: CallbackQuery):
-#     email = callback.data.split('__')[-1]
-#     browser_open(f'mailto:{email}')
-#     await callback.answer()
 
 
 async def list_categories(message: Message | CallbackQuery, **kwargs):
@@ -64,12 +57,11 @@ async def list_services(callback: CallbackQuery, category_id, subcategory_id, pa
     await callback.answer()
 
 
-@dp.callback_query_handler(menu_cd.filter())
+@dp.callback_query_handler(services_cd.filter())
 async def navigate_services(callback: CallbackQuery, callback_data: dict):
     current_level = callback_data.get('level')
-    category_id = callback_data.get('category')
-    subcategory_id = callback_data.get('subcategory')
-    service_id = callback_data.get('service')
+    category_id = callback_data.get('category_id')
+    subcategory_id = callback_data.get('subcategory_id')
     page = callback_data.get('page')
 
     levels = {
@@ -82,6 +74,5 @@ async def navigate_services(callback: CallbackQuery, callback_data: dict):
         callback,
         category_id=category_id,
         subcategory_id=subcategory_id,
-        service_id=service_id,
         page=page
     )
