@@ -14,7 +14,7 @@ async def get_services(subcategory_id):
     return ServiceUser.objects.filter(sub_category=subcategory_id, is_active=True)
 
 
-async def get_top_services():
+async def get_topservices():
     return ServiceUser.objects.filter(is_active=True, is_top=True)
 
 

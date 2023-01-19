@@ -33,7 +33,7 @@ async def courses_list(callback: CallbackQuery, category_id, cur_page, **kwargs)
     cnt = 1
 
     courses = await get_courses(category_id)
-    paginator = Paginator(courses, settings.ITEMS_IN_PAGE)
+    paginator = Paginator(courses, settings.ITEMS_FOR_PAGE)
     page = await sync_to_async(paginator.page)(cur_page)
     page_list = page.object_list
 

@@ -39,7 +39,7 @@ async def list_services(callback: CallbackQuery, category_id, subcategory_id, pa
     cnt = 1
 
     services = await get_services(subcategory_id)
-    paginator = Paginator(services, settings.ITEMS_IN_PAGE)
+    paginator = Paginator(services, settings.ITEMS_FOR_PAGE)
     page = await sync_to_async(paginator.page)(page)
     page_list = page.object_list
 
