@@ -5,3 +5,6 @@ kb_main.row(
     KeyboardButton('TOП'),
     KeyboardButton('Категории'),
 )
+kb_main.row(
+    KeyboardButton('Курсы'),
+)

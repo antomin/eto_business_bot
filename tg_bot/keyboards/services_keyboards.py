@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
 
 from tg_bot.common.db_commands import (get_service_categories,
-                                       get_service_subcategories, get_services)
+                                       get_service_subcategories)
 
 menu_cd = CallbackData('show_menu', 'level', 'category', 'subcategory', 'service', 'page')
 

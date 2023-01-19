@@ -50,7 +50,7 @@ async def list_services(callback: CallbackQuery, category_id, subcategory_id, pa
     page = await sync_to_async(paginator.page)(page)
     page_list = page.object_list
 
-    async for service in page.object_list:
+    async for service in page_list:
         is_last = cnt == len(page_list)
         markup = await service_kb(service, category_id, subcategory_id, is_last=is_last, cur_page=page.number,
                                   has_next_page=page.has_next(), has_prev_page=page.has_previous())
