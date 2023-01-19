@@ -11,6 +11,7 @@ class CourseCategory(models.Model):
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
+        ordering = ['-is_active', 'title']
 
 
 class Course(models.Model):
@@ -29,3 +30,4 @@ class Course(models.Model):
     class Meta:
         verbose_name = 'Курс'
         verbose_name_plural = 'Курсы'
+        ordering = ['-is_active', 'updated_at']
