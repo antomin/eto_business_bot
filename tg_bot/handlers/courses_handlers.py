@@ -9,7 +9,7 @@ from tg_bot.keyboards.courses_keyboards import (course_kb, courses_category_kb,
 from tg_bot.loader import dp
 
 
-@dp.message_handler(text="Курсы")
+@dp.message_handler(text="Обучение и Курсы")
 async def courses(message: Message):
     await message.delete()
     await courses_list_categories(message)

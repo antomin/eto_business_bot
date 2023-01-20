@@ -1,0 +1,12 @@
+[Unit]
+Description=tgbot daemon
+After=network.target
+
+[Service]
+User=etobusiness
+Group=www-data
+WorkingDirectory=/home/etobusiness/etobusiness_app
+ExecStart=/home/etobusiness/venv/bin/python /home/etobusiness/etobusiness_app/manage.py runbot
+
+[Install]
+WantedBy=multi-user.target

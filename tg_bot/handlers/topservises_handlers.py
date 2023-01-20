@@ -9,7 +9,7 @@ from tg_bot.keyboards.topservices_keyboards import (topservices_cd,
 from tg_bot.loader import dp
 
 
-@dp.message_handler(text='ТОП')
+@dp.message_handler(text='Новые Резиденты')
 async def top_services(message: Message):
     await message.delete()
     await get_top_list(message)

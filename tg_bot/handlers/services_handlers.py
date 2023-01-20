@@ -9,7 +9,7 @@ from tg_bot.keyboards.services_keyboards import (categories_kb, service_kb,
 from tg_bot.loader import dp
 
 
-@dp.message_handler(text="Услуги")
+@dp.message_handler(text='Наши Резиденты')
 async def categories(message: Message):
     await message.delete()
     await list_categories(message)

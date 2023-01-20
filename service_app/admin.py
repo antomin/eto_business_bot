@@ -26,13 +26,9 @@ class ServiceUserAdmin(admin.ModelAdmin):
     search_fields = ('first_name', 'last_name')
     list_editable = ('is_top', 'is_active')
     list_filter = ('is_top', 'is_active')
-    fields = ('first_name', 'last_name', 'sub_category', 'description', 'image_url', 'email', 'tg', 'is_top',
+    fields = ('first_name', 'last_name', 'sub_category', 'description', 'image_url', 'email', 'tg', 'web_url', 'is_top',
               'is_active', 'created_at', 'updated_at')
     readonly_fields = ('created_at', 'updated_at')
-
-    # def get_html_photo(self, object):
-    #     if object.image_url:
-    #         return mark_safe(f'<img src="{object.image_url}" width=100')
 
 
 admin.site.register(ServiceCategory, ServiceCategoryAdmin)

@@ -31,11 +31,13 @@ class ServiceSubCategory(models.Model):
 class ServiceUser(models.Model):
     first_name = models.CharField(verbose_name='имя', max_length=24)
     last_name = models.CharField(verbose_name='фамилия', max_length=24)
-    image_url = models.ImageField(upload_to='service_img', verbose_name='изображение', max_length=64, blank=True)
+    image_url = models.ImageField(upload_to='service_img', default='default.jpg', verbose_name='изображение',
+                                  max_length=64)
     sub_category = models.ManyToManyField(ServiceSubCategory, verbose_name='категории')
     description = models.TextField(verbose_name='описание')
     email = models.EmailField(verbose_name='email', blank=True, unique=True)
     tg = models.CharField(verbose_name='телеграм', max_length=24, blank=True, unique=True)
+    web_url = models.URLField(verbose_name='вебсайт', blank=True)
     is_top = models.BooleanField(verbose_name='топ', default=False)
     is_active = models.BooleanField(verbose_name='активна', default=True)
     created_at = models.DateTimeField(verbose_name='время добавления', auto_now_add=True)
@@ -44,11 +46,8 @@ class ServiceUser(models.Model):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
-    async def get_category_id(self):
-        return ServiceCategory.objects.get(id=self.sub_category.first().category.id)
-
     class Meta:
-        verbose_name = 'Услуга'
-        verbose_name_plural = 'Услуги'
-        ordering = ['-is_active', 'updated_at']
+        verbose_name = 'Резидент'
+        verbose_name_plural = 'Резиденты'
+        ordering = ['is_top', '-is_active', 'updated_at']
 

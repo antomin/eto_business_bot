@@ -2,9 +2,11 @@ from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 
 kb_main = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_main.row(
-    KeyboardButton('ТОП'),
-    KeyboardButton('Услуги'),
+    KeyboardButton('Новые Резиденты')
 ).row(
-    KeyboardButton('Курсы'),
-    KeyboardButton('Контакты'),
+    KeyboardButton('Наши Резиденты'),
+    KeyboardButton('Обучение и Курсы'),
+).row(
+    KeyboardButton('Чат сообщества'),
+    KeyboardButton('Связаться с нами'),
 )

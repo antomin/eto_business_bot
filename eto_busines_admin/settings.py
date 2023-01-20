@@ -28,7 +28,7 @@ env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env.str('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -159,4 +159,4 @@ if DEBUG:
 # Telegram bot token
 
 TG_TOKEN = env.str('TG_TOKEN')
-ITEMS_FOR_PAGE = 1
+ITEMS_FOR_PAGE = 5
