@@ -26,8 +26,8 @@ class ServiceUserAdmin(admin.ModelAdmin):
     search_fields = ('first_name', 'last_name')
     list_editable = ('is_top', 'is_active')
     list_filter = ('is_top', 'is_active')
-    fields = ('first_name', 'last_name', 'sub_category', 'description', 'image_url', 'email', 'tg', 'web_url', 'is_top',
-              'is_active', 'created_at', 'updated_at')
+    fields = ('first_name', 'last_name', 'sub_category', 'description', 'image_url', 'phone', 'email', 'tg', 'web_url',
+              'is_top', 'is_active', 'created_at', 'updated_at')
     readonly_fields = ('created_at', 'updated_at')
 
 
