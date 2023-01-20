@@ -1,3 +1,4 @@
+from .chat_handlers import dp
 from .contacts_handlers import dp
 from .courses_handlers import dp
 from .services_handlers import dp

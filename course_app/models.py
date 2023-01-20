@@ -19,7 +19,7 @@ class Course(models.Model):
     category = models.ForeignKey(CourseCategory, verbose_name='категория', on_delete=models.CASCADE)
     description = models.TextField(verbose_name='описание')
     url = models.URLField(verbose_name='ссылка')
-    image_url = models.ImageField(upload_to='course_img', default='default.jpg', verbose_name='изображение',
+    image_url = models.ImageField(upload_to='course_img', default='course_img/default.jpg', verbose_name='изображение',
                                   max_length=64)
     is_active = models.BooleanField(verbose_name='активна', default=True)
     created_at = models.DateTimeField(verbose_name='время добавления', auto_now_add=True)

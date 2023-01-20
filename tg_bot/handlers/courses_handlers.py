@@ -3,7 +3,8 @@ from asgiref.sync import sync_to_async
 from django.conf import settings
 from django.core.paginator import Paginator
 
-from tg_bot.common.db_commands import get_courses
+from tg_bot.common.db_commands import check_access, get_courses
+from tg_bot.handlers.contacts_handlers import contacts
 from tg_bot.keyboards.courses_keyboards import (course_kb, courses_category_kb,
                                                 courses_cd)
 from tg_bot.loader import dp
@@ -11,6 +12,9 @@ from tg_bot.loader import dp
 
 @dp.message_handler(text="Обучение и Курсы")
 async def courses(message: Message):
+    if not await check_access(message.from_user.username):
+        await contacts(message)
+        return
     await message.delete()
     await courses_list_categories(message)
 

@@ -1,3 +1,5 @@
+from asgiref.sync import sync_to_async
+
 from course_app.models import Course, CourseCategory
 from service_app.models import ServiceCategory, ServiceSubCategory, ServiceUser
 
@@ -12,6 +14,11 @@ async def get_service_subcategories(category_id):
 
 async def get_services(subcategory_id):
     return ServiceUser.objects.filter(sub_category=subcategory_id, is_active=True)
+
+
+@sync_to_async
+def check_access(username):
+    return username in ServiceUser.objects.filter(is_active=True).values_list('tg', flat=True)
 
 
 async def get_topservices():

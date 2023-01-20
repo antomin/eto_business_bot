@@ -3,7 +3,8 @@ from asgiref.sync import sync_to_async
 from django.conf import settings
 from django.core.paginator import Paginator
 
-from tg_bot.common.db_commands import get_services
+from tg_bot.common.db_commands import check_access, get_services
+from tg_bot.handlers.contacts_handlers import contacts
 from tg_bot.keyboards.services_keyboards import (categories_kb, service_kb,
                                                  services_cd, subcategories_kb)
 from tg_bot.loader import dp
@@ -11,6 +12,9 @@ from tg_bot.loader import dp
 
 @dp.message_handler(text='Наши Резиденты')
 async def categories(message: Message):
+    if not await check_access(message.from_user.username):
+        await contacts(message)
+        return
     await message.delete()
     await list_categories(message)
 
@@ -45,13 +49,26 @@ async def list_services(callback: CallbackQuery, category_id, subcategory_id, pa
 
     async for service in page_list:
         is_last = cnt == len(page_list)
+
+        text = f'<b>{service.first_name} {service.last_name}</b>\n\n' \
+               f'<b>Обо мне:</b>\n{service.description}'
+
+        if service.email:
+            text += f'\n\n<b>Email:</b> <code>{service.email}</code>'
+
+        if service.phone:
+            text += f'\n\n<b>Тел.:</b> {service.phone}'
+
+        if service.web_url:
+            text += f'\n\n<b>Сайт:</b> <a href="{service.web_url}">{service.web_url}</a>'
+
         markup = await service_kb(service, category_id, subcategory_id, is_last=is_last, cur_page=page.number,
                                   has_next_page=page.has_next(), has_prev_page=page.has_previous())
+
         await callback.message.answer_photo(
-            InputFile(f'{settings.MEDIA_ROOT}/{service.image_url}'),
-            caption=f'<b>{service.first_name} {service.last_name}</b>\n\n{service.description}',
-            reply_markup=markup
+            InputFile(f'{settings.MEDIA_ROOT}/{service.image_url}'), caption=text, reply_markup=markup
         )
+
         cnt += 1
 
     await callback.answer()

@@ -3,7 +3,8 @@ from asgiref.sync import sync_to_async
 from django.conf import settings
 from django.core.paginator import Paginator
 
-from tg_bot.common.db_commands import get_topservices
+from tg_bot.common.db_commands import check_access, get_topservices
+from tg_bot.handlers.contacts_handlers import contacts
 from tg_bot.keyboards.topservices_keyboards import (topservices_cd,
                                                     topservices_kb)
 from tg_bot.loader import dp
@@ -11,6 +12,9 @@ from tg_bot.loader import dp
 
 @dp.message_handler(text='Новые Резиденты')
 async def top_services(message: Message):
+    if not await check_access(message.from_user.username):
+        await contacts(message)
+        return
     await message.delete()
     await get_top_list(message)
 

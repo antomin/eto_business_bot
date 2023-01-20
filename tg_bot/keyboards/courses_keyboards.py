@@ -12,7 +12,7 @@ def make_callback_data(level, category_id='0', page='1'):
 
 async def courses_category_kb():
     cur_level = 0
-    markup = InlineKeyboardMarkup(row_width=1)
+    markup = InlineKeyboardMarkup(row_width=2)
     categories = await get_course_categories()
 
     async for category in categories:

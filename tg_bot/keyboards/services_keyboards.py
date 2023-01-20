@@ -13,7 +13,7 @@ def make_callback_data(level, category_id='0', subcategory_id='0', page='1'):
 
 async def categories_kb():
     cur_level = 0
-    markup = InlineKeyboardMarkup(row_width=1)
+    markup = InlineKeyboardMarkup(row_width=2)
     categories = await get_service_categories()
 
     async for category in categories:
@@ -41,10 +41,7 @@ async def service_kb(service, category_id, subcategory_id, cur_page, is_last=Fal
                      has_prev_page=False):
     cur_level = 2
     markup = InlineKeyboardMarkup()
-    markup.add(
-        InlineKeyboardButton('Email', callback_data=f'mailto__{service.email}'),
-        InlineKeyboardButton('Telegram', url=f't.me/{service.tg}')
-    )
+    markup.add(InlineKeyboardButton('Telegram', url=f't.me/{service.tg}'))
 
     if is_last:
         pagination_btn = []
