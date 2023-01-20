@@ -10,10 +10,7 @@ def make_callback_data(page='1'):
 
 async def topservices_kb(service, cur_page, has_next_page=False, has_prev_page=False, is_last=False):
     markup = InlineKeyboardMarkup()
-    markup.add(
-        InlineKeyboardButton('Email', callback_data=f'mailto__{service.email}'),
-        InlineKeyboardButton('Telegram', url=f't.me/{service.tg}')
-    )
+    markup.add(InlineKeyboardButton('Telegram', url=f't.me/{service.tg}'))
 
     if is_last:
         pagination_btn = []
