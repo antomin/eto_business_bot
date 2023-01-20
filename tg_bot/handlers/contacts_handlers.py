@@ -8,7 +8,7 @@ from tg_bot.loader import dp
 async def contacts(message: Message):
     text = 'Связаться с администрацией сообщества вы можете написав нам:\n\n' \
            '<b>Telegram:</b> @sbalasanyan\n' \
-           '<b>E-mail:</b> <a href="mailto:serg.balasanyan@gmail.com">serg.balasanyan@gmail.com</a>\n' \
+           '<b>E-mail:</b> <code>serg.balasanyan@gmail.com"</code>\n' \
            '<b>Web:</b> <a href="https://eto-business.ru">https://eto-business.ru</a>\n\n' \
            '<b>Наш информационный канал:</b> @eto_business'
     await message.delete()

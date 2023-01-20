@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.paginator import Paginator
 
 from tg_bot.common.db_commands import check_access, get_services
+from tg_bot.common.misc import generate_service_desc
 from tg_bot.handlers.contacts_handlers import contacts
 from tg_bot.keyboards.services_keyboards import (categories_kb, service_kb,
                                                  services_cd, subcategories_kb)
@@ -50,17 +51,7 @@ async def list_services(callback: CallbackQuery, category_id, subcategory_id, pa
     async for service in page_list:
         is_last = cnt == len(page_list)
 
-        text = f'<b>{service.first_name} {service.last_name}</b>\n\n' \
-               f'<b>Обо мне:</b>\n{service.description}'
-
-        if service.email:
-            text += f'\n\n<b>Email:</b> <code>{service.email}</code>'
-
-        if service.phone:
-            text += f'\n\n<b>Тел.:</b> {service.phone}'
-
-        if service.web_url:
-            text += f'\n\n<b>Сайт:</b> <a href="{service.web_url}">{service.web_url}</a>'
+        text = await generate_service_desc(service)
 
         markup = await service_kb(service, category_id, subcategory_id, is_last=is_last, cur_page=page.number,
                                   has_next_page=page.has_next(), has_prev_page=page.has_previous())

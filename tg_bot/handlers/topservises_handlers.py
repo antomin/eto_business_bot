@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.paginator import Paginator
 
 from tg_bot.common.db_commands import check_access, get_topservices
+from tg_bot.common.misc import generate_service_desc
 from tg_bot.handlers.contacts_handlers import contacts
 from tg_bot.keyboards.topservices_keyboards import (topservices_cd,
                                                     topservices_kb)
@@ -29,13 +30,14 @@ async def get_top_list(message: Message | CallbackQuery, cur_page=1):
 
     async for service in page_list:
         is_last = cnt == len(page_list)
+
+        text = await generate_service_desc(service)
+
         markup = await topservices_kb(service, page.number, has_next_page=page.has_next(),
                                       has_prev_page=page.has_previous(), is_last=is_last)
         if isinstance(message, Message):
             await message.answer_photo(
-                InputFile(f'{settings.MEDIA_ROOT}/{service.image_url}'),
-                caption=f'<b>{service.first_name} {service.last_name}</b>\n\n{service.description}',
-                reply_markup=markup
+                InputFile(f'{settings.MEDIA_ROOT}/{service.image_url}'), caption=text, reply_markup=markup
             )
 
         elif isinstance(message, CallbackQuery):
