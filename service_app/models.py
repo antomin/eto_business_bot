@@ -2,7 +2,7 @@ from django.db import models
 
 
 class ServiceCategory(models.Model):
-    title = models.CharField(verbose_name='категория', max_length=64, unique=True)
+    title = models.CharField(verbose_name='категория', max_length=128, unique=True)
     is_active = models.BooleanField(verbose_name='активна', default=True)
 
     def __str__(self):
@@ -15,7 +15,7 @@ class ServiceCategory(models.Model):
 
 
 class ServiceSubCategory(models.Model):
-    title = models.CharField(verbose_name='подкатегория', max_length=64, unique=True)
+    title = models.CharField(verbose_name='подкатегория', max_length=128, unique=True)
     category = models.ForeignKey(ServiceCategory, verbose_name='категория', on_delete=models.PROTECT)
     is_active = models.BooleanField(verbose_name='активна', default=True)
 
@@ -29,15 +29,15 @@ class ServiceSubCategory(models.Model):
 
 
 class ServiceUser(models.Model):
-    first_name = models.CharField(verbose_name='имя', max_length=24)
-    last_name = models.CharField(verbose_name='фамилия', max_length=24)
+    first_name = models.CharField(verbose_name='имя', max_length=128)
+    last_name = models.CharField(verbose_name='фамилия', max_length=128)
     image_url = models.ImageField(upload_to='service_img', default='service_img/default.jpg',
-                                  verbose_name='изображение', max_length=64)
+                                  verbose_name='изображение', max_length=264)
     sub_category = models.ManyToManyField(ServiceSubCategory, verbose_name='категории')
     description = models.TextField(verbose_name='описание')
     email = models.EmailField(verbose_name='email', blank=True)
-    phone = models.CharField(verbose_name='телефон', max_length=20, blank=True)
-    web_url = models.URLField(verbose_name='вебсайт', blank=True)
+    phone = models.CharField(verbose_name='телефон', max_length=24, blank=True)
+    web_url = models.URLField(verbose_name='вебсайт', blank=True, max_length=128)
     tg = models.CharField(verbose_name='телеграм', max_length=24, unique=True)
     is_top = models.BooleanField(verbose_name='топ', default=False)
     is_active = models.BooleanField(verbose_name='активна', default=True)
